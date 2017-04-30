@@ -1,13 +1,15 @@
 package com.proxytest;
 
 import org.aopalliance.intercept.MethodInterceptor;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 
-import java.util.Map;
-import java.util.stream.IntStream;
+public interface RouterProxy extends InitializingBean, FactoryBean<Object>,
+    BeanClassLoaderAware, MethodInterceptor {
 
-public interface RouterProxy {
     void modifyWeight(String key, int weight);
 
-    void newRoute(Map.Entry<String, MethodInterceptor> interceptor, int weight);
+    void newRoute(String key, int weight);
 
 }

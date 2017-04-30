@@ -14,9 +14,9 @@ public class ProxyInterfaceApplication {
 
 	@Bean("proxyRouterName")
 	public ProxyRouterBean routerBean() {
-		ProxyRouterBean bean = new ProxyRouterBean();
+		ProxyRouterBean bean = new ProxyRouterBean(null);
 		bean.setBeanClassLoader(ClassUtils.getDefaultClassLoader());
-		bean.setBusinessInterface(IRouter.class);
+		bean.setBusinessInterface(IProxiedService.class);
 		return bean;
 	}
 }
