@@ -20,6 +20,7 @@ public class ProxyRouterBean<T extends MethodInterceptor> extends AbstractFactor
     private final List<String> randomInterceptorSelector;
     private Integer index = 0;
     private Class<?> objectType;
+    private ClassLoader classLoader;
 
     public ProxyRouterBean(RouterTargetGenerator<T> generator) {
         this.generator = generator;
@@ -65,6 +66,13 @@ public class ProxyRouterBean<T extends MethodInterceptor> extends AbstractFactor
 
     @Override
     protected Object createInstance() throws Exception {
-        return new ProxyFactory(this.getObjectType(), this).getProxy();
+        return new ProxyFactory(this.getObjectType(), this).getProxy(classLoader);
     }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        super.setBeanClassLoader(classLoader);
+        this.classLoader = classLoader;
+    }
+
 }
