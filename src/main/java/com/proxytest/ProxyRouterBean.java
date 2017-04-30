@@ -29,9 +29,7 @@ public class ProxyRouterBean<T extends MethodInterceptor> extends AbstractFactor
     }
 
     public void modifyWeight(String key, int weight) {
-        while (randomInterceptorSelector.contains(key)) {
-            randomInterceptorSelector.remove(key);
-        }
+        randomInterceptorSelector.removeIf(k -> k.equals(key));
         IntStream.range(0, weight).forEach(i -> randomInterceptorSelector.add(key));
         Collections.shuffle(randomInterceptorSelector, new Random(System.nanoTime()));
         index = 0;
@@ -50,9 +48,8 @@ public class ProxyRouterBean<T extends MethodInterceptor> extends AbstractFactor
         if (index >= randomInterceptorSelector.size()) {
             index = 0;
         }
-        String key = randomInterceptorSelector.get(index);
-        index++;
-        return interceptors.get(key).invoke(invocation);
+        return interceptors.get(randomInterceptorSelector.get(index++))
+                .invoke(invocation);
     }
 
     public void setBusinessInterface(Class<?> businessInterface) {
@@ -74,5 +71,4 @@ public class ProxyRouterBean<T extends MethodInterceptor> extends AbstractFactor
         super.setBeanClassLoader(classLoader);
         this.classLoader = classLoader;
     }
-
 }
