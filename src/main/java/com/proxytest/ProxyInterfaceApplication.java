@@ -20,6 +20,7 @@ public class ProxyInterfaceApplication {
 	public ProxyRouterBean routerBean() {
 		ProxyRouterBean bean = new ProxyRouterBean(generator);
 		bean.setBeanClassLoader(ClassUtils.getDefaultClassLoader());
+		bean.setSingleton(true);
 		bean.setBusinessInterface(IProxiedService.class);
 		return bean;
 	}
